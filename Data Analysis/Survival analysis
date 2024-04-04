@@ -1,0 +1,83 @@
+#RCS---------------------------------------------
+library(ggrcs)
+library(rms)
+library(scales)
+dt <- subset(y1, select = c(PA_group_150,age,sex,white,centre,college,smoke,MVPA_week_sum,employment,
+                            drinker,BMI,CVD_history,sleep_time,PRS_3,Townsend.deprivation.index.at.recruitment,T2DM_diag,T2DM_time))
+dt <- subset(dt,MVPA_week_sum>0)
+#dt$MVPA_week_sum <- log(dt$MVPA_week_sum)
+summary(dt$MVPA_week_sum)
+dd<-datadist(dt)
+options(datadist='dd')
+fit<-cph(Surv(T2DM_time,T2DM_diag==1) ~ rcs(MVPA_week_sum,5)+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+           drinker+BMI+CVD_history+sleep_time+PRS_3,x=TRUE, y=TRUE,data=dt)
+
+ggrcs(data=dt,fit=fit,x="MVPA_week_sum",histbinwidth=0.5)
+ggrcs(data=dt,fit=fit,x="MVPA_week_sum",histcol="#7999a3",ribcol="#ffc080",#group="DM_2",
+      histbinwidth=0.2,ribalpha=0.5,xlab ="MVPA times",
+      ylab="HR of T2DM",lift=F,P.Nonlinear=T)+scale_y_continuous(limits = c(0,2))+scale_x_log10() 
+anova(fit)
+topptx(filename ="D:/Projects/Nhanes/14-Diabetes/Data/Figure/RCS.pptx",width = 4.5, height = 3.5, units = "cm")
+
+#PA pattern and incidence of T2DM-------------------------------
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white,data=y1) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white,data=y1) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment,data=y1) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment,data=y1) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=y1) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=y1) |>reportReg()
+
+
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white,data=y1) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white,data=y1) |>reportReg()
+
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment,data=y1) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment,data=y1) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=y1) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=y1) |>reportReg()
+
+fit1<- survfit(Surv(T2DM_time,T2DM_diag==1)~PA_group_150, data =y1)
+#summary(fit)
+ggsurvplot(fit1, data = y1,fun="event",ylim = c(0,0.05),xlim = c(1,10),break.x.by = 2,
+           xlab = "Time (years)",
+           censor=F,palette = c("#D76364","#B883D4","#2F7FC1"), 
+           surv.scale="percent",
+           risk.table = T,
+           conf.int = TRUE,
+           conf.int.style='ribbon',
+           legend.labs=c("Inactive","Active WW","Active regular"),
+           legend.title="", legend=c(0.3,0.8))
+topptx(filename ="D:/Projects/Nhanes/14-Diabetes/Data/Figure/KM/150_DM.pptx",width = 6, height = 7, units = "cm")
+
+fit2<- survfit(Surv(T2DM_time,T2DM_diag==1)~PA_group_230, data =y1)
+ggsurvplot(fit2, data = y1,fun="event",ylim = c(0,0.05),xlim = c(1,10),break.x.by = 2,
+           xlab = "Time (years)",
+           censor=F,palette = c("#D76364","#B883D4","#2F7FC1"), 
+           surv.scale="percent",
+           risk.table = T,
+           conf.int = TRUE,
+           conf.int.style='ribbon',
+           legend.labs=c("Inactive","Active WW","Active regular"),
+           legend.title="", legend=c(0.3,0.8))
+topptx(filename ="D:/Projects/Nhanes/14-Diabetes/Data/Figure/KM/230_DM.pptx",width = 6, height = 7, units = "cm")
+
+fit3<- survfit(Surv(T2DM_time,T2DM_diag==1)~PA_group_300, data =y1)
+ggsurvplot(fit3, data = y1,fun="event",ylim = c(0,0.05),xlim = c(1,10),break.x.by = 2,
+           xlab = "Time (years)",
+           censor=F,palette = c("#D76364","#B883D4","#2F7FC1"), 
+           surv.scale="percent",
+           risk.table = T,
+           conf.int = TRUE,
+           conf.int.style='ribbon',
+           legend.labs=c("Inactive","Weekend warrior","Regularly active"),
+           legend.title="", legend=c(0.3,0.8))
+topptx(filename ="D:/Projects/Nhanes/14-Diabetes/Data/Figure/KM/300_DM.pptx",width = 6, height = 7, units = "cm")
