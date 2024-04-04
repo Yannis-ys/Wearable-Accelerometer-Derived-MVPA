@@ -1,1 +1,54 @@
-d
+summary(y$Glycated.haemoglobin..HbA1c....Instance.1)
+y$GHB_m <- ifelse(is.na(y$Glycated.haemoglobin..HbA1c....Instance.1)==T,y$Glycated.haemoglobin..HbA1c....Instance.0,y$Glycated.haemoglobin..HbA1c....Instance.1)
+summary(y$GHB_m)
+y$GHB <- 0.0915*y$GHB_m + 2.15
+summary(y$GHB)
+table(y$Diabetes.diagnosed.by.doctor...Instance.0,exclude = NULL)
+table(y$Diabetes.diagnosed.by.doctor...Instance.0,y$Diabetes.diagnosed.by.doctor...Instance.1,exclude = NULL)
+
+y$DM_history <- 0
+y$DM_history[y$Diabetes.diagnosed.by.doctor...Instance.0=="Yes"|y$Diabetes.diagnosed.by.doctor...Instance.1=="Yes"|y$GHB>=6.5] <-1
+table(y$DM_history,exclude = NULL)
+
+y$DM_E14 <- as.Date(y$Date.E14.first.reported..unspecified.diabetes.mellitus.)
+y$DM_E13 <- as.Date(y$Date.E13.first.reported..other.specified.diabetes.mellitus.)
+y$DM_E12 <- as.Date(y$Date.E12.first.reported..malnutrition.related.diabetes.mellitus.)
+y$DM_E11 <- as.Date(y$Date.E11.first.reported..non.insulin.dependent.diabetes.mellitus.) 
+y$DM_E10 <- as.Date(y$Date.E10.first.reported..insulin.dependent.diabetes.mellitus.)
+
+  
+#print(sort(y$Date.E14.first.reported..unspecified.diabetes.mellitus., decreasing = TRUE)[1:3])
+summary(y$date_in)
+
+y$DM_E14 <- difftime(y$DM_E14, y$date_in, units = c("auto"))
+y$DM_E13 <- difftime(y$DM_E13, y$date_in, units = c("auto"))
+y$DM_E12 <- difftime(y$DM_E12, y$date_in, units = c("auto"))
+y$DM_E11 <- difftime(y$DM_E11, y$date_in, units = c("auto")) 
+y$DM_E10 <- difftime(y$DM_E10, y$date_in, units = c("auto"))
+y$DM_time <- pmin(y$DM_E14,y$DM_E13,y$DM_E12,y$DM_E11,y$DM_E10,na.rm = T)
+y$T2DM_time <- y$DM_E11
+
+table(y$DM_history,exclude = NULL)
+y$DM_time <- as.numeric(y$DM_time, units = "days")
+y$T2DM_time <- as.numeric(y$T2DM_time, units = "days")
+
+y$DM_time <- y$DM_time/365
+y$T2DM_time <- y$T2DM_time/365
+
+summary(y$DM_time)
+y$DM_diag <- 0
+y$DM_diag[is.na(y$DM_time)!=T] <- 1
+table(y$DM_diag,exclude = NULL)
+
+table(y$Source.of.report.of.E11..non.insulin.dependent.diabetes.mellitus.,exclude=NULL)
+table(y$Source.of.report.of.E11..non.insulin.dependent.diabetes.mellitus.[grepl("Death|Hospital|Primary|Self", y$Source.of.report.of.E11..non.insulin.dependent.diabetes.mellitus.)],exclude=NULL)
+
+y$T2DM_diag <- 0
+y$T2DM_diag[grepl("Death|Hospital|Primary|Self", y$Source.of.report.of.E11..non.insulin.dependent.diabetes.mellitus.)] <- 1
+table(y$T2DM_diag,exclude = NULL)
+y$DM_time <- ifelse(is.na(y$DM_time)==T,y$follow_time,y$DM_time)
+y$T2DM_time <- ifelse(y$T2DM_diag==0,y$follow_time,y$T2DM_time)
+
+y$prediabetes <-0
+y$prediabetes[y$GHB >= 5.7 & y$GHB < 6.5 & y$DM_history==0 & y$DM_time > 0] <-1
+table(y$prediabetes,exclude = NULL)
