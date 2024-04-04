@@ -1,0 +1,52 @@
+ggplot(y1, aes(x = MVPA_week_sum, fill = PA_group_150)) +
+  geom_density(color = "black") +
+  scale_fill_manual(values = c(alpha("red", 0.5), alpha("blue", 0.5), alpha("green", 0.5))) +
+  labs(x = "MVPA_week_sum", y = "Density") +
+  theme_minimal() + xlim(0, 200)+scale_x_log10()
+library(PupillometryR)
+theme_niwot <- function(){
+  theme_minimal()+
+    theme(axis.line = element_line(color = "black"),
+          legend.position="non",
+          axis.ticks = element_line(color = "black"),
+          #panel.grid.major.y = element_line(color = "gray90"),
+          panel.grid.major.x = element_blank(),
+          plot.margin = unit(rep(1, 4), "cm"),
+          axis.text = element_text(size = 10, color = "black"),
+          axis.text.y = element_text(margin = margin(r = 5)),
+          axis.text.x = element_text(margin = margin(t = 5)))
+}
+vp1 <- ggplot(data = y1, 
+         aes(x = reorder(PA_group_150, desc(MVPA_week_sum)), y = MVPA_week_sum, fill = PA_group_150)) +
+  geom_flat_violin(position = position_nudge(x = 0.2, y = 0), alpha = 1.0,adjust=2) +
+  geom_boxplot(width = 0.2, outlier.shape = NA, alpha = 0.8,lwd=0.6) +
+  labs(y = "MVPA, min", x = NULL) +
+  guides(fill = FALSE, color = FALSE) +
+  #scale_y_continuous(limits = c(0, 1000)) +
+  scale_fill_manual(values = c("#5A4A6F", "#E47250",  "#EBB261")) +
+  scale_colour_manual(values = c("#5A4A6F", "#E47250",  "#EBB261")) +
+  coord_flip()+
+  theme_niwot()+scale_y_log10()
+vp2 <- ggplot(data = y1, 
+              aes(x = reorder(PA_group_230, desc(MVPA_week_sum)), y = MVPA_week_sum, fill = PA_group_230)) +
+  geom_flat_violin(position = position_nudge(x = 0.2, y = 0), alpha = 1.0, adjust=2) +
+  geom_boxplot(width = 0.2, outlier.shape = NA, alpha = 0.8,lwd=0.6) +
+  labs(y = "MVPA, min", x = NULL) +
+  guides(fill = FALSE, color = FALSE) +
+  #scale_y_continuous(limits = c(0, 1000)) +
+  scale_fill_manual(values = c("#5A4A6F", "#E47250",  "#EBB261")) +
+  scale_colour_manual(values = c("#5A4A6F", "#E47250",  "#EBB261")) +
+  coord_flip()+
+  theme_niwot()+scale_y_log10()
+vp3 <- ggplot(data = y1, 
+              aes(x = reorder(PA_group_300, desc(MVPA_week_sum)), y = MVPA_week_sum, fill = PA_group_300)) +
+  geom_flat_violin(position = position_nudge(x = 0.2, y = 0), alpha = 1.0) +
+  geom_boxplot(width = 0.2, outlier.shape = NA, alpha = 0.8,lwd=0.6) +
+  labs(y = "MVPA, min", x = NULL) +
+  guides(fill = FALSE, color = FALSE) +
+  #scale_y_continuous(limits = c(0, 1000)) +
+  scale_fill_manual(values = c("#5A4A6F", "#E47250",  "#EBB261")) +
+  scale_colour_manual(values = c("#5A4A6F", "#E47250",  "#EBB261")) +
+  coord_flip()+
+  theme_niwot()+scale_y_log10()
+vp1+vp2+plot_annotation(tag_levels = 'A')+plot_layout(ncol = 2)
