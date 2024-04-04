@@ -150,3 +150,9 @@ y$income1 <- Recode(y$Average.total.household.income.before.tax...Instance.1,
 table(y$income0,exclude = NULL)
 y$income <- ifelse(y$income1=="5-NA",y$income0,y$income1)
 table(y$income,exclude = NULL)
+summary(y$Systolic.blood.pressure..automated.reading...Instance.0...Array.0)
+summary(y$Systolic.blood.pressure..automated.reading...Instance.1...Array.1)
+y$SBP <- ifelse(is.na(y$Systolic.blood.pressure..automated.reading...Instance.1...Array.0)==T,
+                 y$Systolic.blood.pressure..automated.reading...Instance.0...Array.0,
+                 y$Systolic.blood.pressure..automated.reading...Instance.1...Array.0)
+summary(y$SBP)
