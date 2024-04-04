@@ -1,0 +1,107 @@
+#Function define-----
+split_numbers <- function(x) {
+  numbers <- strsplit(x, ",")[[1]]
+  data.frame(MVPA_d1 = as.numeric(numbers[1])*24*60,
+             MVPA_d2 = as.numeric(numbers[2])*24*60,
+             MVPA_d3 = as.numeric(numbers[3])*24*60,
+             MVPA_d4 = as.numeric(numbers[4])*24*60,
+             MVPA_d5 = as.numeric(numbers[5])*24*60,
+             MVPA_d6 = as.numeric(numbers[6])*24*60,
+             MVPA_d7 = as.numeric(numbers[7])*24*60)
+}
+
+split_light <- function(x) {
+  numbers <- strsplit(x, ",")[[1]]
+  data.frame(light_d1 = as.numeric(numbers[1])*24*60,
+             light_d2 = as.numeric(numbers[2])*24*60,
+             light_d3 = as.numeric(numbers[3])*24*60,
+             light_d4 = as.numeric(numbers[4])*24*60,
+             light_d5 = as.numeric(numbers[5])*24*60,
+             light_d6 = as.numeric(numbers[6])*24*60,
+             light_d7 = as.numeric(numbers[7])*24*60)
+}
+
+split_df <- do.call(rbind, lapply(y1$Moderate.Vigorous...Day.average...Instance.0, split_numbers))
+#View(y1[, c("Participant.ID","Moderate.Vigorous...Day.average...Instance.0","Light...Day.average...Instance.0")])
+
+split_light <- do.call(rbind, lapply(y1$Light...Day.average...Instance.0, split_light))
+
+#View(y1[, c("Participant.ID","Moderate.Vigorous...Day.average...Instance.0","MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4","MVPA_d5","MVPA_d6","MVPA_d7","MVPA_week_sum")])
+y1 <- cbind(y1, split_df)
+y1 <- cbind(y1, split_light)
+
+y1$MVPA_week_sum <- rowSums(y1[, c("MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4","MVPA_d5","MVPA_d6","MVPA_d7")])
+summary(y1$MVPA_week_sum)
+
+y1$light_week_sum <- rowSums(y1[, c("light_d1", "light_d2", "light_d3", "light_d4","light_d5","light_d6","light_d7")])
+summary(y1$light_week_sum)
+y1$light_week_2074 <- ifelse(y1$light_week_sum>=2074,1,0)
+
+y1$MVPA_week_150 <- ifelse(y1$MVPA_week_sum>=150,1,0)
+y1$MVPA_week_300 <- ifelse(y1$MVPA_week_sum>=300,1,0)
+summary(y1$MVPA_week_sum)
+y1$MVPA_week_230 <- ifelse(y1$MVPA_week_sum>=230.4,1,0)
+
+table(y1$MVPA_week_150,exclude = NULL)
+table(y1$MVPA_week_300,exclude = NULL)
+table(y1$MVPA_week_230,exclude = NULL)
+table(y1$light_week_2074,exclude = NULL)
+
+#View(y1[, c("Moderate.Vigorous...Day.average...Instance.0","MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4","MVPA_d5","MVPA_d6","MVPA_d7","MVPA_week_sum")])
+summary(y1$MVPA_d1)
+#y1$MVPA_25_number <- rowSums(y1[, c("MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4","MVPA_d5","MVPA_d6","MVPA_d7")] >= 25)
+#y1$MVPA_45_number <- rowSums(y1[, c("MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4","MVPA_d5","MVPA_d6","MVPA_d7")] >= 45)
+
+#table(y1$MVPA_25_number,exclude = NULL)
+#View(y1[, c("Moderate.Vigorous...Day.average...Instance.0","MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4","MVPA_d5","MVPA_d6","MVPA_d7","MVPA_week_sum","MVPA_25_number","MVPA_45_number")])
+
+##Weekend Warrior Mode----------------
+y1$max_2_sum <- apply(y1[, c("MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4", "MVPA_d5", "MVPA_d6", "MVPA_d7")], 1, function(row) sum(tail(sort(row), 2)))
+y1$max_single <- apply(y1[, c("MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4", "MVPA_d5", "MVPA_d6", "MVPA_d7")], 1, function(row) max(row))
+#View(y1[, c("Moderate.Vigorous...Day.average...Instance.0","MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4","MVPA_d5","MVPA_d6","MVPA_d7","MVPA_week_sum","max_2_sum","max_single")])
+
+
+y1$WW <- ifelse(y1$max_2_sum >= y1$MVPA_week_sum * 0.5 |y1$max_single >= y1$MVPA_week_sum * 0.5 , 1, 0)
+
+table(y1$WW,exclude = NULL)
+y1$PA_group_150[y1$MVPA_week_150==0] <- "Inactive"
+y1$PA_group_150[y1$MVPA_week_150==1 & y1$WW==1] <- "Active WW"
+y1$PA_group_150[y1$MVPA_week_150==1 & y1$WW==0] <- "Active regular"
+
+y1$PA_group_230[y1$MVPA_week_230==0] <- "Inactive"
+y1$PA_group_230[y1$MVPA_week_230==1 & y1$WW==1] <- "Active WW"
+y1$PA_group_230[y1$MVPA_week_230==1 & y1$WW==0] <- "Active regular"
+
+y1$PA_group_300[y1$MVPA_week_300==0] <- "Inactive"
+y1$PA_group_300[y1$MVPA_week_300==1 & y1$WW==1] <- "Active WW"
+y1$PA_group_300[y1$MVPA_week_300==1 & y1$WW==0] <- "Active regular"
+
+table(y1$PA_group_150,exclude = NULL)
+#View(y1[, c("WW","MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4","MVPA_d5","MVPA_d6","MVPA_d7","PA_group","MVPA_week_150","Moderate.Vigorous...Day.average...Instance.0")])
+y1$PA_group_150 <- factor(y1$PA_group_150,levels = c("Inactive","Active WW","Active regular"))
+y1$PA_group_230 <- factor(y1$PA_group_230,levels = c("Inactive","Active WW","Active regular"))
+y1$PA_group_300 <- factor(y1$PA_group_300,levels = c("Inactive","Active WW","Active regular"))
+
+y1$PA_group_150_ref <- factor(y1$PA_group_150,levels = c("Active WW","Active regular","Inactive"))
+y1$PA_group_230_ref <- factor(y1$PA_group_230,levels = c("Active WW","Active regular","Inactive"))
+y1$PA_group_300_ref <- factor(y1$PA_group_300,levels = c("Active WW","Active regular","Inactive"))
+
+y1$PA_week_sd <- apply(y1[, c("MVPA_d1", "MVPA_d2", "MVPA_d3", "MVPA_d4", "MVPA_d5", "MVPA_d6", "MVPA_d7")], 1, sd)
+
+y1$WW_75 <- ifelse(y1$max_2_sum >= y1$MVPA_week_sum * 0.75 |y1$max_single >= y1$MVPA_week_sum * 0.75, 1, 0)
+
+table(y1$WW_75,exclude = NULL)
+y1$PA_75group_150[y1$MVPA_week_150==0] <- "Inactive"
+y1$PA_75group_150[y1$MVPA_week_150==1 & y1$WW_75==1] <- "Active WW"
+y1$PA_75group_150[y1$MVPA_week_150==1 & y1$WW_75==0] <- "Active regular"
+
+y1$PA_75group_230[y1$MVPA_week_230==0] <- "Inactive"
+y1$PA_75group_230[y1$MVPA_week_230==1 & y1$WW_75==1] <- "Active WW"
+y1$PA_75group_230[y1$MVPA_week_230==1 & y1$WW_75==0] <- "Active regular"
+
+table(y1$PA_75group_150,exclude = NULL)
+y1$PA_75group_150 <- factor(y1$PA_75group_150,levels = c("Inactive","Active WW","Active regular"))
+y1$PA_75group_230 <- factor(y1$PA_75group_230,levels = c("Inactive","Active WW","Active regular"))
+
+y1$PA_75group_150_ref <- factor(y1$PA_75group_150,levels = c("Active WW","Active regular","Inactive"))
+y1$PA_75group_230_ref <- factor(y1$PA_75group_230,levels = c("Active WW","Active regular","Inactive"))
