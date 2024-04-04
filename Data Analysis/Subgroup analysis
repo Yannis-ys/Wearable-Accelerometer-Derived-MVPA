@@ -1,0 +1,259 @@
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,age>=70)) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,age<70)) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,sex=="Female")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,sex=="Male")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Never")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Previous")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Current")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,BMI_2==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,BMI_2==0)) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,waist_2==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,waist_2==0)) |>reportReg()
+
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,prediabetes==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,prediabetes==0)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+PA_group_230_ref:prediabetes+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=y1) |>reportReg()
+
+summary(y1$PRS_3)
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="[-4.16,-0.629]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="(-0.629,0.198]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="(0.198,3.95]")) |>reportReg()
+
+summary(y1$PRSir_3)
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="[0.0604,0.543]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="(0.543,0.639]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="(0.639,0.96]")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="[0,0.469]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="(0.469,0.549]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="(0.549,0.951]")) |>reportReg()
+
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,age>=70)) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,age<70)) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,sex=="Female")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,sex=="Male")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Never")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Previous")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Current")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,waist_2==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,waist_2==0)) |>reportReg()
+
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,prediabetes==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,prediabetes==0)) |>reportReg()
+
+summary(y1$PRS_3)
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="[-4.16,-0.629]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="(-0.629,0.198]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="(0.198,3.95]")) |>reportReg()
+
+summary(y1$PRSir_3)
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="[0.0604,0.543]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="(0.543,0.639]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="(0.639,0.96]")) |>reportReg()
+
+summary(y1$PRSbcf_3)
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="[0,0.469]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="(0.469,0.549]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="(0.549,0.951]")) |>reportReg()
+
+fit_cox <- coxph(Surv(T2DM_time,T2DM_diag)~PA_group_230_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+                   drinker+BMI+CVD_history+sleep_time,data=y1)
+y1$age_70 <- ifelse(y1$age>=70,1,0)
+y1$age_70 <- as.factor(y1$age_70)
+y1$sex <- as.factor(y1$sex)
+y1$waist_2 <- as.factor(y1$waist_2)
+y1$prediabetes <- as.factor(y1$prediabetes)
+# Recode(y1$PRS_3)
+y1$PRS_3new <- Recode(y1$PRS_3,
+	"[-4.16,-0.629]::low", 
+	"(-0.629,0.198]::medium", 
+	"(0.198,3.95]::high",
+	to.numeric = FALSE)
+# Recode(y1$PRSir_3)
+y1$PRSir_3new <- Recode(y1$PRSir_3,
+	"[0.0604,0.543]::low", 
+	"(0.543,0.639]::medium", 
+	"(0.639,0.96]::high",
+	to.numeric = FALSE)
+# Recode(y1$PRSbcf_3)
+y1$PRSbcf_3new <- Recode(y1$PRSbcf_3,
+	"[0,0.469]::low", 
+	"(0.469,0.549]::medium", 
+	"(0.549,0.951]::high",
+	to.numeric = FALSE)
+subgroupAnalysis(fit_cox,y1,treatment="PA_group_230_ref", 
+                 subgroups=c("age_70"))
+##150min subgroup---------------
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,age>=70)) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,age<70)) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,sex=="Female")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,sex=="Male")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Never")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Previous")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Current")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,waist_2==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,waist_2==0)) |>reportReg()
+
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,prediabetes==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,prediabetes==0)) |>reportReg()
+
+
+summary(y1$PRS_3)
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="[-4.16,-0.629]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="(-0.629,0.198]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="(0.198,3.95]")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="[0.0604,0.543]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="(0.543,0.639]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="(0.639,0.96]")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="[0,0.469]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="(0.469,0.549]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="(0.549,0.951]")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,age>=70)) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,age<70)) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,sex=="Female")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,sex=="Male")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Never")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Previous")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,smoke=="Current")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,waist_2==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+Townsend.deprivation.index.at.recruitment+smoke+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,waist_2==0)) |>reportReg()
+
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,prediabetes==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3,data=subset(y1,prediabetes==0)) |>reportReg()
+
+summary(y1$PRS_3)
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="[-4.16,-0.629]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="(-0.629,0.198]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRS_3=="(0.198,3.95]")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="[0.0604,0.543]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="(0.543,0.639]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSir_3=="(0.639,0.96]")) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="[0,0.469]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="(0.469,0.549]")) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150+age+sex+white+centre+college+employment +smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time,data=subset(y1,PRSbcf_3=="(0.549,0.951]")) |>reportReg()
+
+fit_cox <- coxph(Surv(T2DM_time,T2DM_diag)~PA_group_150_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+                   drinker+BMI+CVD_history+sleep_time,data=y1)
+y1$age_70 <- ifelse(y1$age>=70,1,0)
+y1$age_70 <- as.factor(y1$age_70)
+y1$sex <- as.factor(y1$sex)
+y1$prediabetes <- as.factor(y1$prediabetes)
+# Recode(y1$PRS_3)
+y1$PRS_3new <- Recode(y1$PRS_3,
+                      "[-4.16,-0.629]::low", 
+                      "(-0.629,0.198]::medium", 
+                      "(0.198,3.95]::high",
+                      to.numeric = FALSE)
+subgroupAnalysis(fit_cox,y1,treatment="PA_group_150_ref", 
+                 subgroups=c("PRSbcf_3new"))
