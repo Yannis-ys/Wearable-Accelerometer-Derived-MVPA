@@ -81,3 +81,16 @@ ggsurvplot(fit3, data = y1,fun="event",ylim = c(0,0.05),xlim = c(1,10),break.x.b
            legend.labs=c("Inactive","Weekend warrior","Regularly active"),
            legend.title="", legend=c(0.3,0.8))
 topptx(filename ="D:/Projects/Nhanes/14-Diabetes/Data/Figure/KM/300_DM.pptx",width = 6, height = 7, units = "cm")
+
+#further adjusted for MVPA week sum---------------
+y1$MVPA_week_sum_de <- as.factor(cut_number(y1$MVPA_week_sum,10))
+summary(y1$MVPA_week_sum_de)
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3+MVPA_week_sum_de,data=y1) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3+MVPA_week_sum_de,data=y1) |>reportReg()
+
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_150_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3+MVPA_week_sum_de,data=subset(y1,prediabetes==1)) |>reportReg()
+coxph(Surv(T2DM_time,T2DM_diag==1)~PA_group_230_ref+age+sex+white+centre+college+employment+smoke+Townsend.deprivation.index.at.recruitment+
+        drinker+BMI+CVD_history+sleep_time+PRS_3+MVPA_week_sum_de,data=subset(y1,prediabetes==1)) |>reportReg()
