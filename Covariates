@@ -1,0 +1,152 @@
+table(y$UK.Biobank.assessment.centre...Instance.0,exclude = NULL)
+y$centre <- Recode(y$UK.Biobank.assessment.centre...Instance.0,
+	"Manchester::English", 
+	"Croydon::English", 
+	"Reading::English", 
+	"Newcastle::English", 
+	"Oxford::English", 
+	"Nottingham::English", 
+	"Hounslow::English", 
+	"Barts::English", 
+	"Bury::English", 
+	"Birmingham::English", 
+	"Middlesborough::English", 
+	"Sheffield::English", 
+	"Stoke::English", 
+	"Edinburgh::Scotland", 
+	"Leeds::English", 
+	"Liverpool::English", 
+	"Cardiff::Wales", 
+	"Stockport (pilot)::English", 
+	"Bristol::English", 
+	"Wrexham::Wales", 
+	"Glasgow::Scotland", 
+	"Swansea::Wales",
+	to.numeric = FALSE)
+table(y$centre,exclude = NULL)
+y$date_assess <- as.Date(y$Date.of.attending.assessment.centre...Instance.0)
+y$diff_time_PA_assess <- difftime(y$date_in,y$date_assess,units = c("auto"))
+y$diff_time_PA_assess <- as.numeric(y$diff_time_PA_assess, units = "days") # 日期转换成数值
+y$age <- y$diff_time_PA_assess/365 + y$Age.at.recruitment
+y$sex <- y$Sex
+y$race <- y$Ethnic.background...Instance.0
+table(y$race,exclude = NULL)
+y$white <- ifelse(y$race=="British"|y$race=="Any other white background",1,0)
+table(y$white,exclude = NULL)
+table(y$Qualifications...Instance.1,exclude = NULL)
+y$edu <- y$Qualifications...Instance.0
+table(y$edu,exclude = NULL)
+sum(grepl("College", y$edu))
+sum(grepl("Univer", x$Qualifications...Instance.0))
+y$college0 <- ifelse(grepl("College", y$Qualifications...Instance.0),1,0)
+y$college1 <- ifelse(grepl("College", y$Qualifications...Instance.1),1,0)
+y$college0[y$Qualifications...Instance.0=="Prefer not to answer"|y$Qualifications...Instance.0==""] <- NA
+y$college1[y$Qualifications...Instance.1=="Prefer not to answer"|y$Qualifications...Instance.1==""] <- NA
+table(y$college0,exclude = NULL)
+table(y$college1,exclude = NULL)
+y$college <- ifelse(is.na(y$college1)==T,y$college0,y$college1)
+table(y$college,exclude = NULL)
+#View(y[, c("Participant.ID","college0","college1","college")])
+y$employment0 <- ifelse(grepl("paid employment",y$Current.employment.status...Instance.0),1,0)
+y$employment0[y$Current.employment.status...Instance.0=="Prefer not to answer"|y$Current.employment.status...Instance.0==""] <- NA
+y$employment1 <- ifelse(grepl("paid employment",y$Current.employment.status...Instance.1),1,0)
+y$employment1[y$Current.employment.status...Instance.1=="Prefer not to answer"|y$Current.employment.status...Instance.1==""] <- NA
+y$employment <- ifelse(is.na(y$employment1)==T,y$employment0,y$employment1)
+table(y$employment,exclude = NULL)
+y$smoke0 <- y$Smoking.status...Instance.0
+y$smoke1 <- y$Smoking.status...Instance.1
+table(y$smoke1,exclude = NULL)
+# Recode(y$smoke)
+y$smoke0 <- Recode(y$smoke0,
+	"Previous::", 
+	"Never::", 
+	"Current::", 
+	"Prefer not to answer::NA", 
+	"::NA",
+	to.numeric = FALSE)
+y$smoke1 <- Recode(y$smoke1,
+                   "Previous::", 
+                   "Never::", 
+                   "Current::", 
+                   "Prefer not to answer::NA", 
+                   "::NA",
+                   to.numeric = FALSE)
+y$smoke <- ifelse(is.na(y$smoke1)==T,y$smoke0,y$smoke1)
+y$smoke <- factor(y$smoke, levels = c("Never","Previous","Current"))
+table(y$smoke,exclude = NULL)
+
+summary(y$Alcohol.intake.frequency....Instance.0)
+y$drinker0 <- y$Alcohol.intake.frequency....Instance.0
+y$drinker1 <- y$Alcohol.intake.frequency....Instance.1
+table(y$drinker1,exclude = NULL)
+# Recode(y$drinker)
+y$drinker0 <- Recode(y$drinker0,
+	"Daily or almost daily::", 
+	"Three or four times a week::", 
+	"Special occasions only::", 
+	"Once or twice a week::", 
+	"Never::", 
+	"One to three times a month::", 
+	"Prefer not to answer::NA", 
+	"::NA",
+	to.numeric = FALSE)
+y$drinker1 <- Recode(y$drinker1,
+                     "Daily or almost daily::", 
+                     "Three or four times a week::", 
+                     "Special occasions only::", 
+                     "Once or twice a week::", 
+                     "Never::", 
+                     "One to three times a month::", 
+                     "Prefer not to answer::NA", 
+                     "::NA",
+                     to.numeric = FALSE)
+table(y$drinker1,exclude = NULL)
+y$drinker <- ifelse(is.na(y$drinker1)==T,y$drinker0,y$drinker1)
+y$drinker <- factor(y$drinker, levels = c("Never","Special occasions only",
+                                          "One to three times a month",
+                                          "Once or twice a week",
+                                          "Three or four times a week",
+                                          "Daily or almost daily"))
+table(y$drinker,exclude = NULL)
+y$sleep_time0 <-y$Sleep.duration...Instance.0
+y$sleep_time1 <-y$Sleep.duration...Instance.1
+y$sleep_time0[y$sleep_time0 =="Do not know"|y$sleep_time0 =="Prefer not to answer"|y$sleep_time0 ==""] <- NA
+y$sleep_time1[y$sleep_time1 =="Do not know"|y$sleep_time1 =="Prefer not to answer"|y$sleep_time1 ==""] <- NA
+y$sleep_time0 <- as.numeric(y$sleep_time0)
+y$sleep_time1 <- as.numeric(y$sleep_time1)
+y$sleep_time <- ifelse(is.na(y$sleep_time1)==T,y$sleep_time0,y$sleep_time1)
+summary(y$sleep_time)
+y$BMI0 <- y$Body.mass.index..BMI....Instance.0
+y$BMI1 <- y$Body.mass.index..BMI....Instance.1
+y$BMI <- ifelse(is.na(y$BMI1)==T,y$BMI0,y$BMI1)
+summary(y$BMI)
+y$waist0 <- y$Waist.circumference...Instance.0
+y$waist1 <- y$Waist.circumference...Instance.1
+y$waist <- ifelse(is.na(y$waist1)==T,y$waist0,y$waist1)
+summary(y$waist)
+
+table(y$Average.total.household.income.before.tax...Instance.0,exclude = NULL)
+# Recode(y$Average.total.household.income.before.tax...Instance.0)
+y$income0 <- Recode(y$Average.total.household.income.before.tax...Instance.0,
+	"31,000 to 51,999::2-18,000 to 51,999", 
+	"52,000 to 100,000::3-52,000 to 100,000", 
+	"18,000 to 30,999::2-18,000 to 51,999", 
+	"Greater than 100,000::4-Greater than 100,000", 
+	"Prefer not to answer::5-NA", 
+	"Less than 18,000::1-Less than 18,000", 
+	"Do not know::5-NA", 
+	"::5-NA",
+	to.numeric = FALSE)
+y$income1 <- Recode(y$Average.total.household.income.before.tax...Instance.1,
+                   "31,000 to 51,999::2-18,000 to 51,999", 
+                   "52,000 to 100,000::3-52,000 to 100,000", 
+                   "18,000 to 30,999::2-18,000 to 51,999", 
+                   "Greater than 100,000::4-Greater than 100,000", 
+                   "Prefer not to answer::5-NA", 
+                   "Less than 18,000::1-Less than 18,000", 
+                   "Do not know::5-NA", 
+                   "::5-NA",
+                   to.numeric = FALSE)
+table(y$income0,exclude = NULL)
+y$income <- ifelse(y$income1=="5-NA",y$income0,y$income1)
+table(y$income,exclude = NULL)
