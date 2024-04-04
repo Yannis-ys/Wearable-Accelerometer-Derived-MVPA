@@ -1,0 +1,84 @@
+y$CV_history0 <- y$Vascular.heart.problems.diagnosed.by.doctor...Instance.0
+y$CV_history1 <- y$Vascular.heart.problems.diagnosed.by.doctor...Instance.1
+
+y$CVD_history0 <- 0
+y$CVD_history0[grepl("Stroke|Heart attack", y$CV_history0)] <- 1
+
+y$CVD_history1 <- 0
+y$CVD_history1[grepl("Stroke|Heart attack", y$CV_history1)] <- 1
+table(y$CVD_history0,exclude = NULL)
+table(y$CVD_history1,exclude = NULL)
+y$CVD_history <- ifelse(is.na(y$CVD_history1)==T,y$CVD_history0,y$CVD_history1)
+table(y$CVD_history,exclude = NULL)
+y1 <- y
+y1$MI <- 0
+y1$MI[y1$Date.I21.first.reported..acute.myocardial.infarction.!=''|y1$Date.I22.first.reported..subsequent.myocardial.infarction.!=''] <- 1
+table(y1$MI)
+sum(y1$Date.I21.first.reported..acute.myocardial.infarction.!='' & y1$Date.I22.first.reported..subsequent.myocardial.infarction.!='')
+
+y1$Date.I21.first.reported..acute.myocardial.infarction. <- as.Date(y1$Date.I21.first.reported..acute.myocardial.infarction.)
+y1$Date.I22.first.reported..subsequent.myocardial.infarction. <- as.Date(y1$Date.I22.first.reported..subsequent.myocardial.infarction.)
+
+y1$MI21_time <- difftime(y1$Date.I21.first.reported..acute.myocardial.infarction., y1$date_in, units = c("auto"))
+y1$MI22_time <- difftime(y1$Date.I22.first.reported..subsequent.myocardial.infarction., y1$date_in, units = c("auto"))
+
+y1$MI21_time <- as.numeric(y1$MI21_time, units = "days")
+y1$MI22_time <- as.numeric(y1$MI22_time, units = "days")
+
+y1$MI21_time <- y1$MI21_time/365
+y1$MI22_time <- y1$MI22_time/365
+summary(y1$MI21_time)
+summary(y1$MI22_time)
+sum(is.na(y1$MI21_time)!=T & is.na(y1$MI22_time)!=T)
+
+y1$MI_time <- ifelse(y1$MI21_time>y1$MI22_time,y1$MI22_time,y1$MI21_time)
+summary(is.na(y1$MI_time))
+
+
+#test <- y[is.na(y$MI_time)!=T,c("MI21_time","MI22_time","MI_time")]
+y1$MI_time <- ifelse(is.na(y1$MI_time)==T,y1$follow_time,y1$MI_time)
+summary(y1$MI_time)
+sum(y1$MI==1&y1$MI_time<0)
+
+##stroke------------------
+summary(occur$Date.I60.first.reported..subarachnoid.haemorrhage.)
+summary(occur$Date.I61.first.reported..intracerebral.haemorrhage.)
+summary(occur$Date.I63.first.reported..cerebral.infarction.)
+summary(occur$Date.I64.first.reported..stroke..not.specified.as.haemorrhage.or.infarction.)
+y1$stroke <- 0
+y1$stroke[y1$Date.I60.first.reported..subarachnoid.haemorrhage.!=""|
+           y1$Date.I61.first.reported..intracerebral.haemorrhage.!=""|
+           y1$Date.I63.first.reported..cerebral.infarction.!=""|
+           y1$Date.I64.first.reported..stroke..not.specified.as.haemorrhage.or.infarction.!=""] <- 1
+table(y1$stroke)
+
+y1$stroke_time60 <- as.Date(y1$Date.I60.first.reported..subarachnoid.haemorrhage.)
+y1$stroke_time61 <- as.Date(y1$Date.I61.first.reported..intracerebral.haemorrhage.)
+y1$stroke_time63 <- as.Date(y1$Date.I63.first.reported..cerebral.infarction.)
+y1$stroke_time64 <- as.Date(y1$Date.I64.first.reported..stroke..not.specified.as.haemorrhage.or.infarction.)
+
+y1$stroke_time60 <- difftime(y1$stroke_time60, y1$date_in, units = c("auto"))
+y1$stroke_time61 <- difftime(y1$stroke_time61, y1$date_in, units = c("auto"))
+y1$stroke_time63 <- difftime(y1$stroke_time63, y1$date_in, units = c("auto"))
+y1$stroke_time64 <- difftime(y1$stroke_time64, y1$date_in, units = c("auto"))
+
+#test <- y[y$stroke == 1 ,c("stroke","stroke_time60","stroke_time61","stroke_time63","stroke_time64")]
+#test$stroke_time <- pmin(test$stroke_time60,test$stroke_time61,test$stroke_time63,test$stroke_time64,na.rm = T)
+
+y1$stroke_time <- pmin(y1$stroke_time60,y1$stroke_time61,y1$stroke_time63,y1$stroke_time64,na.rm = T)
+summary(y1$stroke_time)
+y1$stroke_time <- as.numeric(y1$stroke_time, units = "days")
+summary(y1$stroke_time)
+y1$stroke_time <- y1$stroke_time/365
+sum(is.na(y1$stroke_time)==F)
+table(y1$stroke)
+
+y1$stroke_time <- ifelse(is.na(y1$stroke_time)==T,y1$follow_time,y1$stroke_time)
+summary(y1$stroke_time)
+sum(y1$stroke==1 & y1$stroke_time>0)
+
+table(y1$CVD_history,exclude = NULL)
+sum(y1$CVD_history==0 & y1$MI_time<0, na.rm = T)
+
+y1$CVD_history[y1$MI_time<0 | y1$stroke_time <0] <- 1
+table(y1$CVD_history,exclude = NULL)
