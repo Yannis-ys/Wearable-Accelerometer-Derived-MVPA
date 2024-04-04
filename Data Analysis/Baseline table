@@ -1,0 +1,27 @@
+variables_to_convert <- c("sex", "CVD_history","centre","prediabetes","smoke", "BMI_2","waist_2",
+                          "drinker","white","college","income","employment","PA_group_150")
+y1[variables_to_convert] <- lapply(y1[variables_to_convert], factor)
+summary(y1$income)
+t1 <- descrTable( PA_group_150~age+sex+white+centre+college+employment+income+BMI+
+              smoke+drinker+sleep_time+CVD_history+light_week_sum+MVPA_week_sum+GHB+prediabetes+
+              Standard.PRS.for.type.2.diabetes..T2D.+T2DM_diag+Townsend.deprivation.index.at.recruitment, data = y1,digits = 2,
+            #method = c(Standard.PRS.for.type.2.diabetes..T2D.=2,
+                       #light_week_sum=2,MVPA_week_sum=2),
+            hide.no = "0",show.p.mul = TRUE,show.all = T)
+export2csv(t1, file='D:/Projects/Nhanes/14-Diabetes/Data/Table/table1_PA150-groups.csv')
+t2 <- descrTable( T2DM_diag~age+sex+white+centre+college+employment+income+BMI+
+                    smoke+drinker+sleep_time+CVD_history+light_week_sum+MVPA_week_sum+
+                    PA_group_150+GHB+prediabetes+
+                    Standard.PRS.for.type.2.diabetes..T2D.+Townsend.deprivation.index.at.recruitment, data = y1,digits = 2,
+                  #method = c(Standard.PRS.for.type.2.diabetes..T2D.=2,
+                             #light_week_sum=2,MVPA_week_sum=2),
+                  hide.no = "0",show.p.mul = TRUE,show.all = T)
+export2csv(t2, file='D:/Projects/Nhanes/14-Diabetes/Data/Table/table1_DM-groups.csv')
+
+t3 <- descrTable( PA_group_230~age+sex+white+centre+college+employment+income+BMI+
+                    smoke+drinker+sleep_time+CVD_history+light_week_sum+MVPA_week_sum+GHB+prediabetes+
+                    Standard.PRS.for.type.2.diabetes..T2D.+T2DM_diag+Townsend.deprivation.index.at.recruitment, data = y1,digits = 2,
+                  #method = c(Standard.PRS.for.type.2.diabetes..T2D.=2,
+                             #light_week_sum=2,MVPA_week_sum=2),
+                  hide.no = "0",show.p.mul = TRUE,show.all = T)
+export2csv(t3, file='D:/Projects/Nhanes/14-Diabetes/Data/Table/table1_PA230-groups.csv')
