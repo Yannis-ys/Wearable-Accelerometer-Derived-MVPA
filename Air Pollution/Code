@@ -1,4 +1,4 @@
-#加载包--------------------
+#library packages--------------------
 library(ggplot2)
 library(survival)
 library(survminer)
